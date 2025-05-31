@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Google Form with Timer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+      background-color: #F0EBF8;
+    }
+    #timer {
+      font-size: 2em;
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      background-color: white;
+      color: #4a148c;
+      padding: 10px;
+      border: 2px solid #4a148c;
+      border-radius: 5px;
+      z-index: 1000;
+    }
+    #warning {
+      color: red;
+      font-size: 1.2em;
+      display: none;
+      position: fixed;
+      top: 120px;
+      left: 10px;
+      background-color: white;
+      padding: 10px;
+      border: 2px solid red;
+      border-radius: 5px;
+      z-index: 1000;
+    }
+    #form-container {
+      display: block;
+    }
+    #time-up {
+      display: none;
+      font-size: 2em;
+      color: red;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="timer">48:00</div>
+  <div id="warning">
+    ⚠️ <strong>Please submit your answers now!</strong><br>
+    The form will be <strong>closed in 1 minute</strong>, and <strong>your answers will be lost</strong> if you do not submit in time.
+  </div>
+  <div id="form-container">
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeCyCVddj6K0MVOaYJMXRKhFEzSTnN5MJcMOgLY0MPTdlcZPQ/viewform?embedded=true" width="640" height="800" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+  </div>
+  <div id="time-up">Time is up! The form is now closed.</div>
+
+  <script>
+    let timeLeft = 48 * 60;
+    const timerElement = document.getElementById('timer');
+    const warningElement = document.getElementById('warning');
+    const formContainer = document.getElementById('form-container');
+    const timeUpElement = document.getElementById('time-up');
+
+    const countdown = setInterval(() => {
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+      timerElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+      timeLeft--;
+
+      if (timeLeft === 60) {
+        warningElement.style.display = 'block';
+      }
+
+      if (timeLeft < 0) {
+        clearInterval(countdown);
+        formContainer.style.display = 'none';
+        timeUpElement.style.display = 'block';
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
